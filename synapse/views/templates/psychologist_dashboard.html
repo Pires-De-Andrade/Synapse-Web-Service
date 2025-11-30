@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Psicólogo | Synapse{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 style="color:#567ea0">Minha Agenda</h2>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Sair</a>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-calendar-check" style="font-size:2rem;color:#a7ceb8"></i>
+                <h5 class="mt-2">Consultas Hoje</h5>
+                <p class="h4" id="todayCount">-</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-calendar-week" style="font-size:2rem;color:#567ea0"></i>
+                <h5 class="mt-2">Esta Semana</h5>
+                <p class="h4" id="weekCount">-</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-people" style="font-size:2rem;color:#cfaa65"></i>
+                <h5 class="mt-2">Total de Pacientes</h5>
+                <p class="h4" id="patientsCount">-</p>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-vintage mt-4">
+        <div class="card-body">
+            <h5 class="mb-3" style="color:#567ea0">Próximas Consultas</h5>
+            <div id="appointmentsList">
+                <p class="text-muted">Carregando...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Carregar dados do dashboard
+async function loadDashboard() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.user_id) {
+        window.location.href = '/psychologist/login';
+        return;
+    }
+    // Buscar consultas do psicólogo
+    const response = await fetch('/api/appointments');
+    const appointments = await response.json();
+    const psyAppointments = appointments.filter(a => a.psychologist_id === user.user_id);
+    // Atualizar contadores e lista
+    document.getElementById('todayCount').textContent = psyAppointments.filter(a => a.date === new Date().toISOString().split('T')[0]).length;
+    document.getElementById('weekCount').textContent = psyAppointments.length;
+    document.getElementById('patientsCount').textContent = new Set(psyAppointments.map(a => a.patient_id)).size;
+    // Renderizar lista
+    const listEl = document.getElementById('appointmentsList');
+    if (psyAppointments.length === 0) {
+        listEl.innerHTML = '<p class="text-muted">Nenhuma consulta agendada</p>';
+    } else {
+        listEl.innerHTML = psyAppointments.map(a => `
+            <div class="border-bottom py-2">
+                <strong>${a.date}</strong> às ${a.time.substring(0,5)} - Status: ${a.status}
+            </div>
+        `).join('');
+    }
+}
+loadDashboard();
+</script>
+{% endblock %}
+

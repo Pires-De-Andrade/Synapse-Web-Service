@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Synapse - Bem-vindo(a) à Plataforma{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-8 text-center">
+      <h1 class="display-5 mb-3" style="font-family:'Georgia',serif;color:#567ea0">
+        Bem-vindo à <span style="color:#a7ceb8;">Synapse</span>
+      </h1>
+      <p class="lead mb-4" style="color:#3e4b50">Automatize agendamentos, melhore o atendimento e traga inteligência para sua clínica.</p>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="row g-4">
+        <!-- Paciente -->
+        <div class="col-md-4">
+          <div class="card text-center shadow-vintage p-4 h-100">
+            <div class="card-body">
+              <i class="bi bi-heart-pulse d-block mb-3" style="font-size:2.4rem;color:#a7ceb8"></i>
+              <h5 class="card-title">Pacientes</h5>
+              <p class="card-text small">Marque sua consulta, visualize opções de psicólogos e horários disponíveis em poucos cliques.</p>
+              <a href="{{ url_for('patient_booking') }}" class="btn btn-primary w-100 mt-2">Entrar como Paciente</a>
+            </div>
+          </div>
+        </div>
+        <!-- Psicólogo -->
+        <div class="col-md-4">
+          <div class="card text-center shadow-vintage p-4 h-100">
+            <div class="card-body">
+              <i class="bi bi-person-circle d-block mb-3" style="font-size:2.4rem;color:#567ea0"></i>
+              <h5 class="card-title">Psicólogos</h5>
+              <p class="card-text small">Gestão inteligente de agenda, acesso às informações de pacientes e perfil personalizável.</p>
+              <a href="{{ url_for('psychologist_login') }}" class="btn btn-outline-primary w-100 mt-2">Entrar como Psicólogo</a>
+            </div>
+          </div>
+        </div>
+        <!-- Clínica -->
+        <div class="col-md-4">
+          <div class="card text-center shadow-vintage p-4 h-100">
+            <div class="card-body">
+              <i class="bi bi-building d-block mb-3" style="font-size:2.4rem;color:#cfaa65"></i>
+              <h5 class="card-title">Clínicas</h5>
+              <p class="card-text small">Painel completo para gestão de psicólogos, acompanhamento de leads e agenda geral da clínica.</p>
+              <a href="{{ url_for('clinic_login') }}" class="btn btn-outline-primary w-100 mt-2">Entrar como Clínica</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

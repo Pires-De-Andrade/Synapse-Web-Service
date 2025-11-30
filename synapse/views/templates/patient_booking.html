@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Agendar Consulta | Synapse{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-vintage p-4 mb-4">
+                <div class="card-body">
+                    <h3 class="mb-4" style="color:#567ea0">Agendar Nova Consulta</h3>
+                    <form id="bookingForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="patient_name" class="form-label">Nome Completo</label>
+                                <input type="text" class="form-control" id="patient_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="patient_email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="patient_email" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="patient_phone" class="form-label">Telefone</label>
+                                <input type="tel" class="form-control" id="patient_phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="patient_cpf" class="form-label">CPF (opcional)</label>
+                                <input type="text" class="form-control" id="patient_cpf">
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="psychologist_id" class="form-label">Escolha o Psicólogo</label>
+                                <select class="form-control" id="psychologist_id" required>
+                                    <option value="">Carregando...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="appointment_date" class="form-label">Data</label>
+                                <input type="date" class="form-control" id="appointment_date" required min="">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="appointment_time" class="form-label">Horário</label>
+                                <select class="form-control" id="appointment_time" required>
+                                    <option value="">Selecione psicólogo e data primeiro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Observações (opcional)</label>
+                            <textarea class="form-control" id="notes" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Confirmar Agendamento</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Definir data mínima como hoje
+document.getElementById('appointment_date').min = new Date().toISOString().split('T')[0];
+
+// Carregar psicólogos ao carregar página
+fetch('/api/psychologists')
+    .then(r => r.json())
+    .then(psychologists => {
+        const select = document.getElementById('psychologist_id');
+        select.innerHTML = '<option value="">Selecione um psicólogo</option>';
+        psychologists.forEach(p => {
+            if (p.is_active) {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `${p.name} - ${p.specialty}`;
+                select.appendChild(opt);
+            }
+        });
+    })
+    .catch(err => {
+        console.error('Erro ao carregar psicólogos:', err);
+        document.getElementById('psychologist_id').innerHTML = '<option value="">Erro ao carregar</option>';
+    });
+
+// Carregar horários quando data e psicólogo forem selecionados
+document.getElementById('appointment_date').addEventListener('change', loadTimeSlots);
+document.getElementById('psychologist_id').addEventListener('change', loadTimeSlots);
+
+function loadTimeSlots() {
+    const date = document.getElementById('appointment_date').value;
+    const psyId = document.getElementById('psychologist_id').value;
+    const timeSelect = document.getElementById('appointment_time');
+    
+    if (!date || !psyId) {
+        timeSelect.innerHTML = '<option value="">Selecione psicólogo e data primeiro</option>';
+        return;
+    }
+    
+    timeSelect.innerHTML = '<option value="">Carregando horários...</option>';
+    
+    fetch('/api/appointments/available-slots', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({psychologist_id: parseInt(psyId), date: date})
+    })
+    .then(r => r.json())
+    .then(data => {
+        timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
+        if (data.available_times && data.available_times.length > 0) {
+            data.available_times.forEach(time => {
+                const opt = document.createElement('option');
+                opt.value = time;
+                opt.textContent = time;
+                timeSelect.appendChild(opt);
+            });
+        } else {
+            timeSelect.innerHTML = '<option value="">Nenhum horário disponível</option>';
+        }
+    })
+    .catch(err => {
+        console.error('Erro ao carregar horários:', err);
+        timeSelect.innerHTML = '<option value="">Erro ao carregar horários</option>';
+    });
+}
+
+document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('patient_name').value;
+    const email = document.getElementById('patient_email').value;
+    const phone = document.getElementById('patient_phone').value;
+    const cpf = document.getElementById('patient_cpf').value;
+    const psychologistId = parseInt(document.getElementById('psychologist_id').value);
+    const date = document.getElementById('appointment_date').value;
+    const time = document.getElementById('appointment_time').value;
+    const notes = document.getElementById('notes').value;
+    
+    if (!name || !email || !phone || !psychologistId || !date || !time) {
+        alert('Por favor, preencha todos os campos obrigatórios');
+        return;
+    }
+    
+    try {
+        // 1. Criar paciente
+        const patientResponse = await fetch('/api/patients', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name, email, phone, cpf: cpf || null})
+        });
+        
+        if (!patientResponse.ok) {
+            const error = await patientResponse.json();
+            throw new Error(error.error || 'Erro ao criar paciente');
+        }
+        
+        const patient = await patientResponse.json();
+        
+        // 2. Criar agendamento
+        const appointmentResponse = await fetch('/api/appointments', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                patient_id: patient.id,
+                psychologist_id: psychologistId,
+                date: date,
+                time: time,
+                duration: 60,
+                notes: notes || null
+            })
+        });
+        
+        if (!appointmentResponse.ok) {
+            const error = await appointmentResponse.json();
+            throw new Error(error.error || 'Erro ao criar agendamento');
+        }
+        
+        alert('Agendamento realizado com sucesso!');
+        window.location.href = '/';
+    } catch (error) {
+        alert('Erro: ' + error.message);
+    }
+});
+</script>
+{% endblock %}

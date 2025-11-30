@@ -1,0 +1,107 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "dra.ana@clinica.com",
+      "password_hash": "123",
+      "user_type": "psychologist",
+      "name": "Dra. Ana Silva"
+    },
+    {
+      "id": 2,
+      "email": "admin@clinica.com",
+      "password_hash": "123",
+      "user_type": "clinic",
+      "name": "Clínica Mente Sã"
+    },
+    {
+      "id": 3,
+      "email": "joao@email.com",
+      "password_hash": "123",
+      "user_type": "patient",
+      "name": "João Pedro Santos"
+    }
+  ],
+  "psychologists": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "name": "Dra. Ana Silva",
+      "crp": "06/12345",
+      "specialty": "Terapia Cognitivo-Comportamental",
+      "themes": ["Ansiedade", "Depressão", "Síndrome do Pânico"],
+      "bio": "Especialista em TCC com 10 anos de experiência.",
+      "hourly_rate": 150.0,
+      "is_active": true
+    }
+  ],
+  "patients": [
+    {
+      "id": 1,
+      "name": "João Pedro Santos",
+      "email": "joao@email.com",
+      "phone": "(11) 98765-4321",
+      "cpf": "123.456.789-00"
+    }
+  ],
+  "availabilities": [
+    {
+      "id": 1,
+      "psychologist_id": 1,
+      "day_of_week": 1,
+      "start_time": "14:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "psychologist_id": 1,
+      "day_of_week": 3,
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "is_active": true
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "patient_id": 1,
+      "psychologist_id": 1,
+      "date": "2025-11-30",
+      "time": "14:00",
+      "duration": 60,
+      "status": "scheduled",
+      "notes": "Primeira consulta"
+    }
+  ],
+  "clinics": [
+    {
+      "id": 1,
+      "user_id": 2,
+      "name": "Clínica Mente Sã",
+      "address": "Rua das Flores, 123 - São Paulo, SP",
+      "phone": "(11) 3456-7890",
+      "email": "contato@mentesa.com.br"
+    }
+  ],
+  "leads": [
+    {
+      "id": 1,
+      "name": "Maria Oliveira",
+      "email": "maria@email.com",
+      "phone": "(11) 91234-5678",
+      "source": "website",
+      "status": "new",
+      "notes": null
+    },
+    {
+      "id": 2,
+      "name": "Carlos Souza",
+      "email": "carlos@email.com",
+      "phone": "(11) 93456-7890",
+      "source": "ai_chat",
+      "status": "contacted",
+      "notes": "Interessado em TCC"
+    }
+  ]
+}

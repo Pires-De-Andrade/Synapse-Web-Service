@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Clínica | Synapse{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 style="color:#567ea0">Dashboard Administrativo</h2>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Sair</a>
+    </div>
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-person-plus" style="font-size:2rem;color:#a7ceb8"></i>
+                <h6 class="mt-2">Leads</h6>
+                <p class="h4" id="leadsCount">-</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-calendar-check" style="font-size:2rem;color:#567ea0"></i>
+                <h6 class="mt-2">Consultas Hoje</h6>
+                <p class="h4" id="todayAppointments">-</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-people" style="font-size:2rem;color:#cfaa65"></i>
+                <h6 class="mt-2">Psicólogos Ativos</h6>
+                <p class="h4" id="activePsychologists">-</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-vintage p-3 text-center">
+                <i class="bi bi-graph-up" style="font-size:2rem;color:#a7ceb8"></i>
+                <h6 class="mt-2">Taxa Conversão</h6>
+                <p class="h4" id="conversionRate">-</p>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-vintage">
+                <div class="card-body">
+                    <h5 class="mb-3" style="color:#567ea0">Leads Recentes</h5>
+                    <div id="recentLeads">
+                        <p class="text-muted">Carregando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-vintage">
+                <div class="card-body">
+                    <h5 class="mb-3" style="color:#567ea0">Agenda Geral</h5>
+                    <div id="generalSchedule">
+                        <p class="text-muted">Carregando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function loadDashboard() {
+    const [leads, appointments, psychologists] = await Promise.all([
+        fetch('/api/leads').then(r => r.json()),
+        fetch('/api/appointments').then(r => r.json()),
+        fetch('/api/psychologists').then(r => r.json())
+    ]);
+    // Atualizar métricas
+    document.getElementById('leadsCount').textContent = leads.length;
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('todayAppointments').textContent = appointments.filter(a => a.date === today).length;
+    document.getElementById('activePsychologists').textContent = psychologists.filter(p => p.is_active).length;
+    const converted = leads.filter(l => l.status === 'converted').length;
+    document.getElementById('conversionRate').textContent = leads.length > 0 ? Math.round((converted/leads.length)*100) + '%' : '0%';
+    // Renderizar leads recentes
+    const leadsEl = document.getElementById('recentLeads');
+    leadsEl.innerHTML = leads.slice(0, 5).map(l => `
+        <div class="border-bottom py-2">
+            <strong>${l.name}</strong> - ${l.status}
+        </div>
+    `).join('');
+    // Renderizar agenda
+    const scheduleEl = document.getElementById('generalSchedule');
+    scheduleEl.innerHTML = appointments.slice(0, 5).map(a => `
+        <div class="border-bottom py-2">
+            <strong>${a.date}</strong> às ${a.time.substring(0,5)}
+        </div>
+    `).join('');
+}
+loadDashboard();
+</script>
+{% endblock %}
+

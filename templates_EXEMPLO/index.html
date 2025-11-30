@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">
+                    Inteligência Artificial para
+                    <span class="text-warning">Clínicas de Psicologia</span>
+                </h1>
+                <p class="lead mb-4">
+                    Automatize agendamentos, melhore o atendimento ao paciente e integre sua agenda com IA
+                </p>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <a href="{{ url_for('patient_booking') }}" class="btn btn-warning btn-lg">
+                        <i class="bi bi-calendar-plus me-2"></i>Agendar Consulta
+                    </a>
+                    <a href="{{ url_for('clinic_login') }}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-building me-2"></i>Área da Clínica
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Funcionalidades que Transformam sua Clínica</h2>
+                <p class="lead text-muted">Tudo que você precisa para modernizar seu atendimento psicológico</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-cpu text-primary fs-3"></i>
+                        </div>
+                        <h5 class="card-title">IA Inteligente</h5>
+                        <p class="card-text text-muted">Agentes de IA que atendem pacientes 24/7, respondem dúvidas e agendam consultas automaticamente</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-calendar-check text-success fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Integração Google Calendar</h5>
+                        <p class="card-text text-muted">Sincronização total com Google Calendar para gestão eficiente da sua agenda</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-chat-dots text-info fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Atendimento Automatizado</h5>
+                        <p class="card-text text-muted">Chatbot inteligente que responde dúvidas frequentes e qualifica leads</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-people text-warning fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Gestão de Pacientes</h5>
+                        <p class="card-text text-muted">Sistema completo para gerenciar informações e histórico dos pacientes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-clock text-danger fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Agendamento 24/7</h5>
+                        <p class="card-text text-muted">Pacientes podem agendar consultas a qualquer hora, sem intermediários</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-secondary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-graph-up text-secondary fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Dashboard Completo</h5>
+                        <p class="card-text text-muted">Acompanhe métricas, leads e desempenho da clínica em tempo real</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- User Sections -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Soluções para Cada Necessidade</h2>
+                <p class="lead text-muted">Ferramentas específicas para psicólogos, clínicas e pacientes</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Psicólogos -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-body p-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-person-circle text-primary fs-3"></i>
+                        </div>
+                        <h4 class="card-title">Para Psicólogos</h4>
+                        <p class="card-text text-muted mb-4">Gerencie sua agenda integrada ao Google Calendar e defina horários disponíveis com facilidade</p>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Sincronização automática com Google Calendar</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Definição de horários disponíveis</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Visualização de consultas agendadas</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Perfil profissional personalizável</li>
+                        </ul>
+                        
+                        <a href="{{ url_for('psychologist_login') }}" class="btn btn-outline-primary w-100">Acessar Área do Psicólogo</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Clínicas -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow border-primary">
+                    <div class="card-body p-4">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-building text-success fs-3"></i>
+                        </div>
+                        <h4 class="card-title">Para Clínicas</h4>
+                        <p class="card-text text-muted mb-4">Dashboard completo com visão de todos os leads, psicólogos e agendamentos da clínica</p>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Dashboard com métricas em tempo real</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Gestão de todos os psicólogos</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Acompanhamento de leads e conversões</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Agenda geral consolidada</li>
+                        </ul>
+                        
+                        <a href="{{ url_for('clinic_login') }}" class="btn btn-success w-100">Acessar Área da Clínica</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pacientes -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-body p-4">
+                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-heart-pulse text-warning fs-3"></i>
+                        </div>
+                        <h4 class="card-title">Para Pacientes</h4>
+                        <p class="card-text text-muted mb-4">Agende sua consulta de forma simples, escolhendo seu psicólogo e horário preferidos</p>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Agendamento sem necessidade de cadastro</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Escolha seu psicólogo de preferência</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Visualização de horários disponíveis</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Confirmação instantânea</li>
+                        </ul>
+                        
+                        <a href="{{ url_for('patient_booking') }}" class="btn btn-warning w-100">Agendar Minha Consulta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
